@@ -1,9 +1,24 @@
 // Loading Comments via AJAX - Replaced by Remote True
 $(function(){
   $("a.load_comments").on("click", function(e){
+    e.preventDefault();
+    // Requesting JSON
+    $.get(this.href).success((json) => {
+      const $ol = $('#commentsList');
+      let listHTML = '';
+      $ol.html(""); //Empty list contents
+      // iterate over each comment in json append to ol.
+      for(let comment of json) {
+          listHTML += `<li>${comment.content}</li>`;
+      }
+      // inject built listHTML to ol#commentsList
+      $ol.html(listHTML);
+    })
+});
+});
     // You just clicked on the Load Comments Link
     // We'd love to use the HREF attribute of that link as the URL for the request
-    // alert(this.href);
+
     // $.ajax({
     //   method: "GET",
     //   url: this.href
@@ -16,10 +31,10 @@ $(function(){
     // e.preventDefault();
 
     // Using higher level jQuery .get method
-    $.get(this.href)
-      .success((response) => {$('.comments').html(response)})
-      .error((response) => {$('.comments').html('<h2>Error, please try again.</h2')});
-    });
+    // $.get(this.href)
+    //   .success((response) => {$('.comments').html(response)})
+    //   .error((response) => {$('.comments').html('<h2>Error, please try again.</h2')});
+    // });
 
     // Fire some ajax.
 //     $.ajax({
@@ -37,7 +52,7 @@ $(function(){
 //     $.get(this.href).success(function(response){
 //       $("div.comments").html(response)
 //     })
-//
+
 //     // Requesting JSON
 //     $.get(this.href).success(function(json){
 //       // clear the OL html (in case there were stale comments)
@@ -64,7 +79,6 @@ $(function(){
 //
 //     e.preventDefault();
 //   })
-})
 
 
 // Submit Comments via AJAX - Soon to be replaced by remote true
@@ -88,5 +102,4 @@ $(function(){
 //     // Send a POST request to the correct place that form would've gone too anyway
 //     // along with the actual form data.
 //     e.preventDefault();
-//   })
 // });
